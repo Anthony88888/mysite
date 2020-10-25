@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.http import JsonResponse
 
 
+
 from .models import Comment
 from .forms import CommentForm
 
@@ -25,9 +26,6 @@ def update_comment(request):
             comment.parent = parent
             comment.reply_to = parent.user
         comment.save()
-
-        # 发送邮件通知
-        comment.send_mail()
 
         # 返回数据
         data['status'] = 'SUCCESS'

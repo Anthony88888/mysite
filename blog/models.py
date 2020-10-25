@@ -12,10 +12,14 @@ class BlogType(models.Model):
     def __str__(self):
         return self.type_name
 
+    class Meta:
+        verbose_name = '博客类型'
+        verbose_name_plural = verbose_name
+
 
 class Blog(models.Model, ReadNumExpandMethod):
-    title = models.CharField(max_length=50)
-    blog_type = models.ForeignKey(BlogType, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50, verbose_name="标题")
+    blog_type = models.ForeignKey(BlogType, on_delete=models.CASCADE, verbose_name="博客类型")
     content = RichTextUploadingField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     read_details = GenericRelation(ReadDetail)
@@ -25,6 +29,9 @@ class Blog(models.Model, ReadNumExpandMethod):
     def get_url(self):
         return reverse('blog_detail', kwargs={'blog_pk': self.pk})
 
+    def get_user(self):
+        return self.author
+
     def get_email(self):
         return self.author.email
 
@@ -33,6 +40,8 @@ class Blog(models.Model, ReadNumExpandMethod):
 
     class Meta:
         ordering = ['-created_time']
+        verbose_name = '博客'
+        verbose_name_plural = verbose_name
 
 
 
